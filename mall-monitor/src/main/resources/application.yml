@@ -1,0 +1,72 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: @pom.artifactId@
+  profiles:
+    active: @profileActive@
+  cloud:
+    config:
+      uri: http://admin:admin@mall-discovery:8080/
+      label: master #xorgmhpuclyebeje
+  mail:
+    host: smtp.qq.com
+    username: 779043593
+    password: xorgmhpuclyebeje
+    port: 465
+    protocol: smtp
+    test-connection: true
+    default-encoding: UTF-8
+    properties:
+      mail:
+        debug: true
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            port: 465
+          starttls:
+            enable: true
+            required: true
+  boot:
+    admin:
+      client:
+        metadata:
+          user:
+            name: admin
+            password: admin
+    monitor:
+      period: 60000
+    discovery:
+      enabled: true
+    notify:
+      mail:
+        to: 564908927@qq.com
+        from: 779043593@qq.com
+    turbine:
+      clusters: default
+      location: turbine
+    routes:
+      endpoints: env,metrics,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream,activiti
+management:
+  security:
+    enabled: false
+security:
+  user:
+    name: admin
+    password: admin
+  basic:
+    enabled: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://admin:admin@mall-eureka:8761/eureka/
+    instance:
+      instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
+logging:
+  level.root: info
+  path: logs/
+  file: ${spring.application.name}.log

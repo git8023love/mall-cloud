@@ -1,0 +1,75 @@
+server:
+  port: 8081
+  tomcat:
+    uri-encoding: UTF-8
+    remote-ip-header: x-forwarded-for
+  use-forward-headers: true
+spring:
+  profiles:
+    active: @profileActive@
+  application:
+    name: @pom.artifactId@
+  boot:
+    admin:
+      username: admin
+      password: admin
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/jeff_uac?characterEncoding=utf8&useSSL=false
+    username: root
+    password: root1234
+    filters: stat,wall
+    druid:
+      initial-size: 10
+      min-idle: 10
+      max-active: 30
+      test-on-borrow: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      web-stat-filter:
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+      stat-view-servlet:
+        allow:
+        login-username: admin
+        login-password: admin
+  cloud:
+    discovery:
+      client:
+        simple:
+          local:
+            uri: http://admin:admin@mall-discovery:8080/
+  redis:
+    host: 192.168.1.151
+    password: 123456
+    port: 6379
+    timeout: 0
+mybatis:
+  type-aliases-package: com.mall.cloud.provider.uac.model.domain
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+mapper:
+  mappers: com.mall.cloud.common.core.mybatis.MyMapper
+  not-empty: true
+  identity: MYSQL
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+management:
+  security:
+    enabled: false
+security:
+  basic:
+    enabled: true
+  user:
+    name: admin
+    password: admin
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:admin@mall-eureka:8761/eureka/
+    instance:
+      instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
+
